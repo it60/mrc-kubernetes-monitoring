@@ -1,0 +1,61 @@
+#####README.md
+#helm repo add bitnami https://charts.bitnami.com/bitnami
+#helm install thanos bitnami/thanos -f <file-values>.yaml
+
+objstoreConfig: |-
+  type: s3
+  config:
+    bucket: thanos
+    endpoint: {{ include "thanos.minio.fullname" . }}.monitoring.svc.cluster.local:9000
+    access_key: minio
+    secret_key: miniosecret
+    insecure: true
+query:
+  stores:
+    - k8s-cluster-central.example.com:10901 
+    - k8s-cluster-prod.example.com:10901
+
+  service:
+    type: NodePort
+
+bucketweb:
+  enabled: true
+  service:
+    type: NodePort
+
+compactor:
+  enabled: true
+  service:
+    type: NodePort
+
+queryFrontend:
+  enabled: true
+  service:
+    type: NodePort
+
+storegateway:
+  enabled: true
+ruler:
+  enabled: true
+  alertmanagers:
+    - http://kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+  config: |-
+    groups:
+      - name: "metamonitoring"
+        rules:
+          - alert: "PrometheusDown"
+            expr: absent(up{prometheus="monitoring/kube-prometheus"})
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+minio:
+  enabled: true
+  accessKey:
+    password: "minio"
+  secretKey:
+    password: "miniosecret"
+  defaultBuckets: "thanos"
+  #####
+  service:
+    type: NodePort

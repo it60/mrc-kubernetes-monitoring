@@ -1,0 +1,1 @@
+Follow the document: https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.1/guide/integrations/external_dns/

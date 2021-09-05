@@ -1,0 +1,10 @@
+Follow step by step in AWS document: https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html
+NOTE: ##### Step 5: If we are using calico CNI in cluster: add --set hostNetwork=true 
+Example:
+helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller \
+  --set clusterName=<cluster-name> \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=<region> \
+  --set hostNetwork=true \
+  -n kube-system

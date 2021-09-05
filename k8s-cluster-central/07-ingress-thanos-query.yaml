@@ -1,0 +1,29 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress #alb
+metadata:
+  name: ingress-thanos-query
+  namespace: monitoring
+  annotations:
+
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: #your_list_subnet,
+    # for creating record-set
+    external-dns.alpha.kubernetes.io/hostname: 	k8s-prometheus-querier.example.com # give your domain name here
+    #additional
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: #<your-cert>
+    alb.ingress.kubernetes.io/ssl-policy: #<your-ssl>
+spec:
+  rules:
+    - host: "k8s-prometheus-querier.example.com"
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            serviceName: thanos-query
+            servicePort: 9090
+
+
