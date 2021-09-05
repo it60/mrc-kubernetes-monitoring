@@ -1,1 +1,2 @@
-k8s-cluster-central/** linguist-documentation=false
+*.yml linguist-detectable=true
+*.yml linguist-language=YAML
