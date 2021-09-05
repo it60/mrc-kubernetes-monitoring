@@ -3,7 +3,7 @@
 ## Description
 Monitoring K8s using Thanos sidecar solution
 
-## Architecture
+## Architecture: Reference from Thanos community repository
 ![Ref Architecture from Thanos community repository](./Architecture.png)
 
 ## Completed
